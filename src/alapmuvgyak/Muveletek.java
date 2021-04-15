@@ -338,7 +338,7 @@ public class Muveletek extends javax.swing.JFrame {
         fc.addChoosableFileFilter(imgFilter);
         FileNameExtensionFilter txtFilter = new FileNameExtensionFilter ("csak szöveg (*.txt)", "txt");
         fc.addChoosableFileFilter(txtFilter);
-        FileNameExtensionFilter cspFilter = new FileNameExtensionFilter ("saját ()*.csp", "csp");
+        FileNameExtensionFilter cspFilter = new FileNameExtensionFilter ("saját ()*.bm", "bm");
         fc.addChoosableFileFilter(cspFilter);
         
         fc.addChoosableFileFilter(txtFilter);
