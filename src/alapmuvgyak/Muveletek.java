@@ -355,7 +355,7 @@ public class Muveletek extends javax.swing.JFrame {
             
                 lblEredmeny.setText("<html>Elérés: " + f.getPath() + "<br>Könvtar: " + f.getName() + "<html>");
                 try{
-                    Files.write(Paths.get(f.getPath() + ".txt"), "Statisztika".getBytes());
+                    Files.write(Paths.get(f.getPath() + "." + kit[0]), "Statisztika".getBytes());
                 } catch (IOException ex) {
                     Logger.getLogger(Muveletek.class.getName()).log(Level.SEVERE, null, ex);
                 }
