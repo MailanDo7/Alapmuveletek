@@ -219,6 +219,11 @@ public class Muveletek extends javax.swing.JFrame {
         mnuFajl.setText("Fájl");
 
         mnuFajlMegnyit.setText("Megnyit");
+        mnuFajlMegnyit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuFajlMegnyitActionPerformed(evt);
+            }
+        });
         mnuFajl.add(mnuFajlMegnyit);
 
         jMenuItem1.setText("Mentés másként");
@@ -300,88 +305,84 @@ public class Muveletek extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEllenorzesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEllenorzesActionPerformed
-        
+
     }//GEN-LAST:event_btnEllenorzesActionPerformed
 
     private void btnMegoldasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMegoldasActionPerformed
-      
+
     }//GEN-LAST:event_btnMegoldasActionPerformed
 
     private void mnuFajlMentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuFajlMentActionPerformed
-        JFileChooser fc = new JFileChooser();  
+        JFileChooser fc = new JFileChooser();
         fc.setDialogTitle("Fájl mentése");
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         fc.setCurrentDirectory(new File("."));
-        
-        int valasztottGombErteke = fc.showSaveDialog(this); 
+
+        int valasztottGombErteke = fc.showSaveDialog(this);
         if (valasztottGombErteke == JFileChooser.APPROVE_OPTION) {
             File f = fc.getSelectedFile();
             if (f.isDirectory()) {
                 lblEredmeny.setText("<html>Elérés: " + f.getPath() + "<br>Könvtar: " + f.getName() + "<html>");
-                try{
+                try {
                     Files.write(Paths.get(f.getPath() + "\\stat.txt"), "Statisztika".getBytes());
                 } catch (IOException ex) {
                     Logger.getLogger(Muveletek.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        }  
+        }
     }//GEN-LAST:event_mnuFajlMentActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         JFileChooser fc = new JFileChooser(new File("."));
         fc.setDialogTitle("Fájl mentése másként");
-        
+
         fc.setAcceptAllFileFilterUsed(false);
-        
+
         /* valasztahato kiterjesztesek*/
-        FileNameExtensionFilter imgFilter = new FileNameExtensionFilter ("PNG és GIF képek", "png", "gif");
+        FileNameExtensionFilter imgFilter = new FileNameExtensionFilter("PNG és GIF képek", "png", "gif");
         fc.addChoosableFileFilter(imgFilter);
-        FileNameExtensionFilter txtFilter = new FileNameExtensionFilter ("csak szöveg (*.txt)", "txt");
+        FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("csak szöveg (*.txt)", "txt");
         fc.addChoosableFileFilter(txtFilter);
-        FileNameExtensionFilter cspFilter = new FileNameExtensionFilter ("saját ()*.bm", "bm");
-        fc.addChoosableFileFilter(cspFilter);
-        
+        FileNameExtensionFilter bmFilter = new FileNameExtensionFilter("saját ()*.bm", "bm");
+        fc.addChoosableFileFilter(bmFilter);
+
         fc.addChoosableFileFilter(txtFilter);
-        
+
         /* tesztesetek:
         -kiterjesztes nincs megvaltoztatva
         -kiterjesztes megvaltoztatva, olyan kiterjesztes irasa ami nincs listaban
         -uresen hmarad a file neve
         -masik mappa kivalasztasa
-        */
-        
-        /* tesztesetek:
+         */
+ /* tesztesetek:
         -ha kiterjesztessel valsztom a meglevo fajlt, akkor megint moge rakja a kiterjesztest
         -
-        */
-        
-        int valasztottGombErteke = fc.showSaveDialog(this); 
+         */
+        int valasztottGombErteke = fc.showSaveDialog(this);
         if (valasztottGombErteke == JFileChooser.APPROVE_OPTION) {
             File f = fc.getSelectedFile();
-            String[] kit = ((FileNameExtensionFilter)fc.getFileFilter()).getExtensions();
+            String[] kit = ((FileNameExtensionFilter) fc.getFileFilter()).getExtensions();
             String fn = f.getPath(); // + "."  +kit[0];
-            
+
             /* csak egyszer rakja moge a kiterjesztest*/
-            
-            if(!fn.endsWith("." + kit [0])){
+            if (!fn.endsWith("." + kit[0])) {
                 fn += "." + kit[0];
             }
-            
+
             boolean mentes = true;
-            
+
             /* ha mar letezik*/
-            
             Path path = Paths.get(fn);
-            if(Files.exists(path)){
+            if (Files.exists(path)) {
                 valasztottGombErteke = JOptionPane.showConfirmDialog(this, "A fájl létezik! \nFelülírjam?", "A fájl már létezik!", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-                if (valasztottGombErteke == JOptionPane.NO_OPTION){
+                if (valasztottGombErteke == JOptionPane.NO_OPTION) {
                     mentes = false;
                 }
             }
-            
+
             lblEredmeny.setText("<html>Elérés: " + f.getPath() + "<br>Könvtar: " + f.getName() + "<html>");
-            try{
-                if(mentes) {
+            try {
+                if (mentes) {
                     Files.write(path, "Statisztika: új".getBytes());
                 }
             } catch (IOException ex) {
@@ -392,10 +393,39 @@ public class Muveletek extends javax.swing.JFrame {
         }
       }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
+    private void mnuFajlMegnyitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuFajlMegnyitActionPerformed
+        JFileChooser fc = new JFileChooser(new File("."));
+        fc.setDialogTitle("Fájl megynyitása");
+        fc.setAcceptAllFileFilterUsed(false);
+
+        FileNameExtensionFilter imgFilter = new FileNameExtensionFilter("PNG és GIF képek", "png", "gif");
+        fc.addChoosableFileFilter(imgFilter);
+        FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("csak szöveg (*.txt)", "txt");
+        fc.addChoosableFileFilter(txtFilter);
+        FileNameExtensionFilter bmFilter = new FileNameExtensionFilter("saját ()*.bm", "bm");
+        fc.addChoosableFileFilter(bmFilter);
+
+        fc.addChoosableFileFilter(txtFilter);
+
+        int valasztottGombErteke = fc.showOpenDialog(this);
+        if (valasztottGombErteke == JFileChooser.APPROVE_OPTION) {
+            File f = fc.getSelectedFile();
+            String fn = f.getPath();
+            lblEredmeny.setText("<html>Elérés: " + fn + "<br>Fájl neve: " + f.getName() + "<html>");
+
+            /* ez nyitja meg */
+            
+            /* ez nyitja meg VEGE*/
+        } else {
+            JOptionPane.showMessageDialog(this, "Megynitás megszakítása", "Nincs megnyitás", JOptionPane.WARNING_MESSAGE);
+        }
+    
+    }//GEN-LAST:event_mnuFajlMegnyitActionPerformed
+
+/**
+ * @param args the command line arguments
+ */
+public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -406,16 +436,28 @@ public class Muveletek extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                }
+
+}
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Muveletek.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Muveletek.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Muveletek.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Muveletek.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Muveletek.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+} catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Muveletek.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+} catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Muveletek.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Muveletek.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
